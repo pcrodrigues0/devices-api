@@ -6,8 +6,10 @@ export class DeviceService {
   private devices: DeviceDto[] = [];
 
   create(device: DeviceDto) {
+    const currentDate = new Date();
+    const timestamp = currentDate.getTime();
+    device.creationTime = timestamp;
     this.devices.push(device);
-    console.log(this.devices);
   }
 
   update(device: DeviceDto) {

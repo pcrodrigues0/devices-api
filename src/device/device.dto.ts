@@ -1,20 +1,43 @@
-enum DeviceState {
-  available = 'available',
-  inUse = 'in-use',
-  inactive = 'inactive',
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+
+export enum DeviceStateEnum {
+  AVAILABLE = 'available',
+  IN_USE = 'in-use',
+  INACTIVE = 'inactive',
 }
 
 export class DeviceDto {
+  @IsNumber()
   id: string;
+
+  @IsString()
+  @MinLength(3)
+  @MaxLength(256)
   name: string;
+
+  @IsString()
+  @MinLength(3)
+  @MaxLength(256)
   brand: string;
-  state: DeviceState;
+
+  @IsEnum(DeviceStateEnum)
+  state: DeviceStateEnum;
+
+  @IsNumber()
+  @IsOptional()
   creationTime: number;
 }
 
 export interface FindAllParameters {
   brand?: string;
-  state?: DeviceState;
+  state?: DeviceStateEnum;
   page?: number;
   limit?: number;
   sortBy?: string;
