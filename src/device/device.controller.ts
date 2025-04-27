@@ -6,8 +6,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
-import { DeviceDto } from './device.dto';
+import { DeviceDto, FindAllParameters } from './device.dto';
 import { DeviceService } from './device.service';
 
 @Controller('v1/device')
@@ -29,6 +30,11 @@ export class DeviceController {
   @Get('/:id')
   findById(@Param('id') id: string) {
     return this.deviceService.findById(id);
+  }
+
+  @Get()
+  findAll(@Query() params: FindAllParameters): DeviceDto[] {
+    return this.deviceService.findAll(params);
   }
 
   @Delete('/:id')

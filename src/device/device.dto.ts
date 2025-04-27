@@ -11,3 +11,12 @@ export class DeviceDto {
   state: DeviceState;
   creationTime: number;
 }
+
+export interface FindAllParameters {
+  brand?: string;
+  state?: DeviceState;
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc'; // default is 'asc'
+}

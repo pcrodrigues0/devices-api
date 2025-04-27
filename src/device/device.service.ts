@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DeviceDto } from './device.dto';
+import { DeviceDto, FindAllParameters } from './device.dto';
 
 @Injectable()
 export class DeviceService {
@@ -32,6 +32,20 @@ export class DeviceService {
       `Device with id ${id} not found`,
       HttpStatus.NOT_FOUND,
     );
+  }
+
+  findAll(params: FindAllParameters): DeviceDto[] {
+    console.log('params', params);
+    return this.devices.filter((d) => {
+      let match = true;
+      if (params.brand != undefined && d.brand !== params.brand) {
+        match = false;
+      }
+      if (params.state != undefined && d.state !== params.state) {
+        match = false;
+      }
+      return match;
+    });
   }
 
   remove(id: string) {
