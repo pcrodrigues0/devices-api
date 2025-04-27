@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { DeviceDto } from './device.dto';
 import { DeviceService } from './device.service';
 
@@ -10,5 +10,16 @@ export class DeviceController {
   create(@Body() device: DeviceDto) {
     this.deviceService.create(device);
     return device;
+  }
+
+  @Put()
+  update(@Body() device: DeviceDto) {
+    this.deviceService.update(device);
+    return device;
+  }
+
+  @Get('/:id')
+  findById(@Param('id') id: string) {
+    return this.deviceService.findById(id);
   }
 }
