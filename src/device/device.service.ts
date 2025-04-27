@@ -18,7 +18,7 @@ export class DeviceService {
     }
 
     throw new HttpException(
-      `Task with id ${device.id} not found`,
+      `Device with id ${device.id} not found`,
       HttpStatus.BAD_REQUEST,
     );
   }
@@ -29,8 +29,21 @@ export class DeviceService {
     if (foundDevice.length) return foundDevice[0];
 
     throw new HttpException(
-      `Task with id ${id} not found`,
+      `Device with id ${id} not found`,
       HttpStatus.NOT_FOUND,
+    );
+  }
+
+  remove(id: string) {
+    const deviceIndex = this.devices.findIndex((d) => d.id === id);
+    if (deviceIndex >= 0) {
+      this.devices.splice(deviceIndex, 1);
+      return;
+    }
+
+    throw new HttpException(
+      `Device with id ${id} not found`,
+      HttpStatus.BAD_REQUEST,
     );
   }
 }
