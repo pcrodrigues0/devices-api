@@ -15,7 +15,7 @@ export enum DeviceStateEnum {
 
 export class DeviceDto {
   @IsNumber()
-  id: string;
+  id: number;
 
   @IsString()
   @MinLength(3)

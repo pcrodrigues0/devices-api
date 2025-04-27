@@ -14,7 +14,7 @@ const dataSourceOptions: DataSourceOptions = {
   password: configService.get<string>('DB_PASSWORD'),
   database: configService.get<string>('DB_NAME'),
   entities: [],
-  migrations: [__dirname + 'migrations/*.ts'],
+  migrations: [__dirname + '/migrations/*.ts'],
   synchronize: false,
 };
 
