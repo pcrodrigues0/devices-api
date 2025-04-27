@@ -37,7 +37,6 @@ export class DeviceService {
   }
 
   findAll(params: FindAllParameters): DeviceDto[] {
-    console.log('params', params);
     return this.devices.filter((d) => {
       let match = true;
       if (params.brand != undefined && d.brand !== params.brand) {
