@@ -28,7 +28,7 @@ export class DeviceController {
   }
 
   @Get('/:id')
-  findById(@Param('id') id: string) {
+  findById(@Param('id') id: number) {
     return this.deviceService.findById(id);
   }
 
@@ -38,7 +38,7 @@ export class DeviceController {
   }
 
   @Delete('/:id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: number) {
     this.deviceService.remove(id);
     return { message: 'Device deleted successfully' };
   }

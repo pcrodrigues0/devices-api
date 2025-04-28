@@ -25,7 +25,7 @@ export class DeviceService {
     );
   }
 
-  findById(id: string): DeviceDto {
+  findById(id: number): DeviceDto {
     const foundDevice = this.devices.filter((d) => d.id === id);
 
     if (foundDevice.length) return foundDevice[0];
@@ -49,7 +49,7 @@ export class DeviceService {
     });
   }
 
-  remove(id: string) {
+  remove(id: number) {
     const deviceIndex = this.devices.findIndex((d) => d.id === id);
     if (deviceIndex >= 0) {
       this.devices.splice(deviceIndex, 1);
