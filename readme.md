@@ -36,12 +36,6 @@ This project is an API for device management. It provides endpoints to create, u
 4. Access the API at `http://localhost:3000`.
 5. To view the open api access `http://localhost:3000/docs`.
 
-## Docker
-1. Run the command: 
-    ```bash
-    npm run start:dev
-    ```
-
 ## Developer mode
 1. Make sure to update de env file with an valid database
 2. Run the command:
