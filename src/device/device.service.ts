@@ -26,17 +26,17 @@ export class DeviceService {
     return this.mapEntityToDto(createdDevice);
   }
 
-  update(device: DeviceDto) {
-    const deviceIndex = this.devices.findIndex((d) => d.id === device.id);
-    if (deviceIndex >= 0) {
-      this.devices[deviceIndex] = device;
-      return;
+  async update(id: number, device: DeviceDto) {
+    const foundDevice = await this.deviceRepository.findOne({
+      where: { id: id },
+    });
+    if (!foundDevice) {
+      throw new HttpException(
+        `Device with id ${device.id} not found`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
-
-    throw new HttpException(
-      `Device with id ${device.id} not found`,
-      HttpStatus.BAD_REQUEST,
-    );
+    await this.deviceRepository.update(id, this.mapDtoToEntity(device));
   }
 
   async findById(id: number): Promise<DeviceDto> {
@@ -79,13 +79,21 @@ export class DeviceService {
     );
   }
 
-  private mapEntityToDto(device: DeviceEntity): DeviceDto {
+  private mapEntityToDto(deviceEntity: DeviceEntity): DeviceDto {
     return {
-      id: device.id,
-      name: device.name,
-      brand: device.brand,
-      state: device.state,
-      creationTime: device.creationTime.toLocaleTimeString('en-US'),
+      id: deviceEntity.id,
+      name: deviceEntity.name,
+      brand: deviceEntity.brand,
+      state: deviceEntity.state,
+      creationTime: deviceEntity.creationTime.toLocaleTimeString('en-US'),
+    };
+  }
+
+  private mapDtoToEntity(deviceDto: DeviceDto): Partial<DeviceEntity> {
+    return {
+      brand: deviceDto.brand,
+      name: deviceDto.name,
+      state: deviceDto.state,
     };
   }
 }

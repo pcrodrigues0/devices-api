@@ -8,7 +8,11 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { DeviceDto, FindAllParameters } from './device.dto';
+import {
+  DeviceDto,
+  DeviceRouterParameters,
+  FindAllParameters,
+} from './device.dto';
 import { DeviceService } from './device.service';
 
 @Controller('v1/device')
@@ -21,10 +25,12 @@ export class DeviceController {
     return createdDevice;
   }
 
-  @Put()
-  update(@Body() device: DeviceDto) {
-    this.deviceService.update(device);
-    return device;
+  @Put('/:id')
+  async update(
+    @Param() params: DeviceRouterParameters,
+    @Body() device: DeviceDto,
+  ) {
+    await this.deviceService.update(params.id, device);
   }
 
   @Get('/:id')

@@ -43,3 +43,7 @@ export interface FindAllParameters {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc'; // default is 'asc'
 }
+
+export class DeviceRouterParameters {
+  id: number;
+}
