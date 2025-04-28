@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DeviceDto, DeviceStateEnum, FindAllParameters } from './device.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeviceEntity } from 'src/db/entities/device.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { DeviceEntity } from '../db/entities/device.entity';
 
 @Injectable()
 export class DeviceService {

@@ -1,4 +1,4 @@
-import { DeviceStateEnum } from 'src/device/device.dto';
+import { DeviceStateEnum } from '../../device/device.dto';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'devices' })
