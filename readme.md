@@ -38,9 +38,13 @@ This project is an API for device management. It provides endpoints to create, u
 
 ## Developer mode
 1. Make sure to update de env file with an valid database
+2. Install the dependencies:
+    ```bash
+    npm install
+    ```
 2. Run the command:
     ```bash
-    docker-compose up -d
+    npm run start:dev
     ```
 ## Migrations
 1. To run a migration use: 
