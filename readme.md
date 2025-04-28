@@ -60,6 +60,13 @@ This project is an API for device management. It provides endpoints to create, u
     npm run migration:create
     ```
 
+## Tests
+1 To run the tests use:
+    ```bash
+    npm run test
+    ```
+
+
 ## Endpoints
 ### GET /devices
 Returns the list of devices.
