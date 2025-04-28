@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'device' })
-export class deviceEntity {
+@Entity({ name: 'devices' })
+export class DeviceEntity {
   @PrimaryColumn({ type: 'integer' })
   id: number;
   @Column({ type: 'varchar' })
