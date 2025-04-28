@@ -16,9 +16,9 @@ export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
 
   @Post()
-  create(@Body() device: DeviceDto) {
-    this.deviceService.create(device);
-    return device;
+  async create(@Body() device: DeviceDto): Promise<DeviceDto> {
+    const createdDevice = await this.deviceService.create(device);
+    return createdDevice;
   }
 
   @Put()
@@ -28,7 +28,7 @@ export class DeviceController {
   }
 
   @Get('/:id')
-  findById(@Param('id') id: number) {
+  findById(@Param('id') id: number): Promise<DeviceDto> {
     return this.deviceService.findById(id);
   }
 

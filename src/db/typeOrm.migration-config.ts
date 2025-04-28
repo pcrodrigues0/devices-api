@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { DeviceEntity } from './entities/device.entitiy';
+import { DeviceEntity } from './entities/device.entity';
 
 config();
 

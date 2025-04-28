@@ -7,8 +7,8 @@ export class Devices1745795836362 implements MigrationInterface {
          id integer NOT NULL,
          name varchar(256) NOT NULL,
          brand varchar(256) NOT NULL,
-         status varchar(50) NOT NULL DEFAULT 'INACTIVE',
-         creation_time integer NOT NULL,
+         state varchar(50) NOT NULL DEFAULT 'INACTIVE',
+         creation_time timestamp NOT NULL,
          constraint device_pk PRIMARY KEY (id)
          );
         `);

@@ -1,15 +1,29 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DeviceDto, FindAllParameters } from './device.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeviceEntity } from 'src/db/entities/device.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DeviceService {
   private devices: DeviceDto[] = [];
 
-  create(device: DeviceDto) {
+  constructor(
+    @InjectRepository(DeviceEntity)
+    private readonly deviceRepository: Repository<DeviceEntity>,
+  ) {}
+
+  async create(device: DeviceDto) {
     const currentDate = new Date();
-    const timestamp = currentDate.getTime();
-    device.creationTime = timestamp;
-    this.devices.push(device);
+    const deviceToSave: DeviceEntity = {
+      id: device.id,
+      name: device.name,
+      brand: device.brand,
+      state: device.state,
+      creationTime: currentDate,
+    };
+    const createdDevice = await this.deviceRepository.save(deviceToSave);
+    return this.mapEntityToDto(createdDevice);
   }
 
   update(device: DeviceDto) {
@@ -25,15 +39,18 @@ export class DeviceService {
     );
   }
 
-  findById(id: number): DeviceDto {
-    const foundDevice = this.devices.filter((d) => d.id === id);
+  async findById(id: number): Promise<DeviceDto> {
+    const foundDevice = await this.deviceRepository.findOne({
+      where: { id: id },
+    });
 
-    if (foundDevice.length) return foundDevice[0];
-
-    throw new HttpException(
-      `Device with id ${id} not found`,
-      HttpStatus.NOT_FOUND,
-    );
+    if (!foundDevice) {
+      throw new HttpException(
+        `Device with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return this.mapEntityToDto(foundDevice);
   }
 
   findAll(params: FindAllParameters): DeviceDto[] {
@@ -60,5 +77,15 @@ export class DeviceService {
       `Device with id ${id} not found`,
       HttpStatus.BAD_REQUEST,
     );
+  }
+
+  private mapEntityToDto(device: DeviceEntity): DeviceDto {
+    return {
+      id: device.id,
+      name: device.name,
+      brand: device.brand,
+      state: device.state,
+      creationTime: device.creationTime.toLocaleTimeString('en-US'),
+    };
   }
 }

@@ -30,9 +30,9 @@ export class DeviceDto {
   @IsEnum(DeviceStateEnum)
   state: DeviceStateEnum;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  creationTime: number;
+  creationTime: string;
 }
 
 export interface FindAllParameters {
