@@ -51,7 +51,7 @@ This project is an API for device management. It provides endpoints to create, u
     ```bash
     npm run migration:run
     ```
-2. To rever the migration use:
+2. To revert the migration use:
     ```bash
     npm run migration:revert
     ```
