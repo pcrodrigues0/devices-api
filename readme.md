@@ -4,7 +4,7 @@
 This project is an API for device management. It provides endpoints to create, update, list, and delete devices.
 
 ## Technologies Used
-- Node.js
+- Node.js (V.22)
 - Nest.js
 - Postgres
 - Docker
@@ -35,6 +35,12 @@ This project is an API for device management. It provides endpoints to create, u
     ```
 4. Access the API at `http://localhost:3000`.
 5. To view the open api access `http://localhost:3000/docs`.
+
+## Docker
+1. Run the command: 
+    ```bash
+    docker build -t nestjs-app .
+    ```
 
 ## Endpoints
 ### GET /devices
