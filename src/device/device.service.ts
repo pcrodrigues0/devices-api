@@ -66,17 +66,14 @@ export class DeviceService {
     );
   }
 
-  remove(id: number) {
-    const deviceIndex = this.devices.findIndex((d) => d.id === id);
-    if (deviceIndex >= 0) {
-      this.devices.splice(deviceIndex, 1);
-      return;
+  async remove(id: number) {
+    const result = await this.deviceRepository.delete({ id: id });
+    if (!result) {
+      throw new HttpException(
+        `Device with id ${id} not found`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
-
-    throw new HttpException(
-      `Device with id ${id} not found`,
-      HttpStatus.BAD_REQUEST,
-    );
   }
 
   private mapEntityToDto(deviceEntity: DeviceEntity): DeviceDto {
