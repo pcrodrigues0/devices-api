@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DeviceDto, FindAllParameters } from './device.dto';
+import { DeviceDto, DeviceStateEnum, FindAllParameters } from './device.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeviceEntity } from 'src/db/entities/device.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
@@ -36,6 +36,19 @@ export class DeviceService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    // Prevent updates to name and brand if the device is in use
+    if (
+      foundDevice.state === DeviceStateEnum.IN_USE &&
+      (device.name || device.brand) &&
+      device?.state === DeviceStateEnum.IN_USE
+    ) {
+      throw new HttpException(
+        `Cannot update name or brand of a device that is in use`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    // Allow state change if transitioning from "IN_USE" to another state
     await this.deviceRepository.update(id, this.mapDtoToEntity(device));
   }
 
@@ -67,11 +80,30 @@ export class DeviceService {
   }
 
   async remove(id: number) {
-    const result = await this.deviceRepository.delete({ id: id });
-    if (!result) {
+    const foundDevice = await this.deviceRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!foundDevice) {
       throw new HttpException(
         `Device with id ${id} not found`,
         HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // Prevent deletion if the device is in use
+    if (foundDevice.state === DeviceStateEnum.IN_USE) {
+      throw new HttpException(
+        `Cannot delete a device that is currently in use`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const result = await this.deviceRepository.delete({ id: id });
+    if (result.affected === 0) {
+      throw new HttpException(
+        `Failed to delete device with id ${id}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
