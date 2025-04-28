@@ -35,6 +35,24 @@ export class DeviceDto {
   creationTime: string;
 }
 
+export class DeviceUpdateDto {
+  @IsString()
+  @MinLength(3)
+  @MaxLength(256)
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @MinLength(3)
+  @MaxLength(256)
+  @IsOptional()
+  brand: string;
+
+  @IsEnum(DeviceStateEnum)
+  @IsOptional()
+  state: DeviceStateEnum;
+}
+
 export interface FindAllParameters {
   brand?: string;
   state?: DeviceStateEnum;

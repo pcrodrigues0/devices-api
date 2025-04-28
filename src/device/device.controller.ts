@@ -11,6 +11,7 @@ import {
 import {
   DeviceDto,
   DeviceRouterParameters,
+  DeviceUpdateDto,
   FindAllParameters,
 } from './device.dto';
 import { DeviceService } from './device.service';
@@ -28,7 +29,7 @@ export class DeviceController {
   @Put('/:id')
   async update(
     @Param() params: DeviceRouterParameters,
-    @Body() device: DeviceDto,
+    @Body() device: DeviceUpdateDto,
   ) {
     await this.deviceService.update(params.id, device);
   }

@@ -1,5 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DeviceDto, DeviceStateEnum, FindAllParameters } from './device.dto';
+import {
+  DeviceDto,
+  DeviceStateEnum,
+  DeviceUpdateDto,
+  FindAllParameters,
+} from './device.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { DeviceEntity } from '../db/entities/device.entity';
@@ -26,22 +31,24 @@ export class DeviceService {
     return this.mapEntityToDto(createdDevice);
   }
 
-  async update(id: number, device: DeviceDto) {
+  async update(id: number, device: DeviceUpdateDto) {
     const foundDevice = await this.deviceRepository.findOne({
       where: { id: id },
     });
     if (!foundDevice) {
       throw new HttpException(
-        `Device with id ${device.id} not found`,
+        `Device with id ${id} not found`,
         HttpStatus.BAD_REQUEST,
       );
     }
-
     // Prevent updates to name and brand if the device is in use
+    // This can be refactored to simplify
+    const newState = device.state ? device.state : foundDevice.state;
     if (
       foundDevice.state === DeviceStateEnum.IN_USE &&
       (device.name || device.brand) &&
-      device?.state === DeviceStateEnum.IN_USE
+      foundDevice.state === DeviceStateEnum.IN_USE &&
+      newState === DeviceStateEnum.IN_USE
     ) {
       throw new HttpException(
         `Cannot update name or brand of a device that is in use`,
@@ -118,7 +125,7 @@ export class DeviceService {
     };
   }
 
-  private mapDtoToEntity(deviceDto: DeviceDto): Partial<DeviceEntity> {
+  private mapDtoToEntity(deviceDto: DeviceUpdateDto): Partial<DeviceEntity> {
     return {
       brand: deviceDto.brand,
       name: deviceDto.name,
