@@ -29,9 +29,9 @@ This project is an API for device management. It provides endpoints to create, u
     ```bash
     docker-compose up -d
     ```
-3. Start the server:
+3. Run the migrations via:
     ```bash
-    npm start
+    npm run migration:run
     ```
 4. Access the API at `http://localhost:3000`.
 5. To view the open api access `http://localhost:3000/docs`.
@@ -39,7 +39,27 @@ This project is an API for device management. It provides endpoints to create, u
 ## Docker
 1. Run the command: 
     ```bash
-    docker build -t nestjs-app .
+    npm run start:dev
+    ```
+
+## Developer mode
+1. Make sure to update de env file with an valid database
+2. Run the command:
+    ```bash
+    docker-compose up -d
+    ```
+## Migrations
+1. To run a migration use: 
+    ```bash
+    npm run migration:run
+    ```
+2. To rever the migration use:
+    ```bash
+    npm run migration:revert
+    ```
+3. To create a new migration use: 
+    ```bash
+    npm run migration:create
     ```
 
 ## Endpoints
