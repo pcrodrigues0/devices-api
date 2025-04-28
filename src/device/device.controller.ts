@@ -33,7 +33,7 @@ export class DeviceController {
   }
 
   @Get()
-  findAll(@Query() params: FindAllParameters): DeviceDto[] {
+  findAll(@Query() params: FindAllParameters): Promise<DeviceDto[]> {
     return this.deviceService.findAll(params);
   }
 

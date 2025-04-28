@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DeviceDto, FindAllParameters } from './device.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeviceEntity } from 'src/db/entities/device.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 
 @Injectable()
 export class DeviceService {
@@ -53,17 +53,17 @@ export class DeviceService {
     return this.mapEntityToDto(foundDevice);
   }
 
-  findAll(params: FindAllParameters): DeviceDto[] {
-    return this.devices.filter((d) => {
-      let match = true;
-      if (params.brand != undefined && d.brand !== params.brand) {
-        match = false;
-      }
-      if (params.state != undefined && d.state !== params.state) {
-        match = false;
-      }
-      return match;
+  async findAll(params: FindAllParameters): Promise<DeviceDto[]> {
+    const searchParams: FindOptionsWhere<DeviceEntity> = {};
+    if (params.brand) searchParams.brand = params.brand;
+    if (params.state) searchParams.state = params.state;
+
+    const devicesFound = await this.deviceRepository.find({
+      where: searchParams,
     });
+    return devicesFound.map((deviceEntity) =>
+      this.mapEntityToDto(deviceEntity),
+    );
   }
 
   remove(id: number) {
