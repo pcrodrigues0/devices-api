@@ -73,17 +73,27 @@ export class DeviceService {
     return this.mapEntityToDto(foundDevice);
   }
 
-  async findAll(params: FindAllParameters): Promise<DeviceDto[]> {
-    const searchParams: FindOptionsWhere<DeviceEntity> = {};
-    if (params.brand) searchParams.brand = params.brand;
-    if (params.state) searchParams.state = params.state;
+  async findAll(params: FindAllParameters): Promise<any> {
+    const { brand, state, page = 1, limit = 10 } = params;
 
-    const devicesFound = await this.deviceRepository.find({
+    const searchParams: FindOptionsWhere<DeviceEntity> = {};
+    if (brand) searchParams.brand = brand;
+    if (state) searchParams.state = state;
+
+    const [devicesFound, total] = await this.deviceRepository.findAndCount({
       where: searchParams,
+      skip: (page - 1) * limit,
+      take: limit,
     });
-    return devicesFound.map((deviceEntity) =>
-      this.mapEntityToDto(deviceEntity),
-    );
+
+    return {
+      data: devicesFound.map((deviceEntity) =>
+        this.mapEntityToDto(deviceEntity),
+      ),
+      total,
+      page,
+      limit,
+    };
   }
 
   async remove(id: number) {
